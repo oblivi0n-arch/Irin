@@ -3,8 +3,8 @@ import SwiftUI
 @main
 struct IrinApp: App {
     var body: some Scene {
-        MenuBarExtra("Irin", systemImage: "eye.half.closed") {
-            Text("Irin is resting.")
+        MenuBarExtra(IrinApp.appName, systemImage: "eye.half.closed") {
+            Text("\(IrinApp.appName) is resting.")
                 .padding()
         }
         .menuBarExtraStyle(.window)
