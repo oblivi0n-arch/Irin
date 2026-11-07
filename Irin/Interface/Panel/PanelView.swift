@@ -117,7 +117,7 @@ struct PanelView: View {
                     .fill(Palette.divider)
                     .frame(width: Metrics.hairline)
 
-                Toggle("Stop below \(AwakeSession.lowBatteryPercent)) % battery", isOn: $stopsOnLowBattery)
+                Toggle("Stop below \(AwakeSession.lowBatteryPercent) % battery", isOn: $stopsOnLowBattery)
                     .toggleStyle(.inscribed("ΔΥΝΑΜΙΣ"))
             }
             .fixedSize(horizontal: false, vertical: true)
