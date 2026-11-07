@@ -16,6 +16,9 @@ final class AwakeSession {
             power.activate(kind, reason: reason)
         }
     }
+    
+    var stopsOnLowBattery = false
+    static let lowBatteryLevel = 0.2
 
     private var kind: PowerAssertion.Kind {
         keepsDisplayOn ? .display : .system
@@ -73,5 +76,16 @@ final class AwakeSession {
         if remaining(at: now) == 0 {
             stop()
         }
+    }
+    
+    func stopIfBatteryLow(_ battery: BatteryState?) {
+        guard stopsOnLowBattery,
+              isWatching,
+              let battery,
+              battery.isOnBattery,
+              battery.level < Self.lowBatteryLevel
+        else { return }
+
+        stop()
     }
 }

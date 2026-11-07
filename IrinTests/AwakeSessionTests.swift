@@ -122,4 +122,31 @@ struct AwakeSessionTests {
 
         #expect(power.isActive == false)
     }
+    
+    @Test func lowBatteryStopsWatching() {
+        let session = AwakeSession(power: power)
+        session.stopsOnLowBattery = true
+        session.start(condition: .indefinitely, now: start)
+        session.stopIfBatteryLow(BatteryState(level: 0.19, isOnBattery: true))
+
+        #expect(session.isWatching == false)
+        #expect(power.isActive == false)
+    }
+
+    @Test func lowBatteryWhileChargingKeepsWatching() {
+        let session = AwakeSession(power: power)
+        session.stopsOnLowBattery = true
+        session.start(condition: .indefinitely, now: start)
+        session.stopIfBatteryLow(BatteryState(level: 0.05, isOnBattery: false))
+
+        #expect(session.isWatching)
+    }
+
+    @Test func lowBatteryIsIgnoredWhenTheGuardIsOff() {
+        let session = AwakeSession(power: power)
+        session.start(condition: .indefinitely, now: start)
+        session.stopIfBatteryLow(BatteryState(level: 0.19, isOnBattery: true))
+
+        #expect(session.isWatching)
+    }
 }
