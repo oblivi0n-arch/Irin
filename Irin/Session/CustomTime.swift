@@ -10,15 +10,26 @@ struct CustomTime: Equatable {
     static let durationRange = 15...(24 * 60)
     private static let minutesPerDay = 24 * 60
 
-    var mode: Mode = .duration
+    private(set) var mode: Mode = .duration
     private(set) var durationMinutes = 90
     private(set) var untilMinutes: Int
 
     init(now: Date = .now, calendar: Calendar = .current) {
+        untilMinutes = Self.defaultUntil(now: now, calendar: calendar)
+    }
+
+    mutating func select(_ newMode: Mode, now: Date = .now, calendar: Calendar = .current) {
+        if newMode == .until && mode != .until {
+            untilMinutes = Self.defaultUntil(now: now, calendar: calendar)
+        }
+        mode = newMode
+    }
+
+    private static func defaultUntil(now: Date, calendar: Calendar) -> Int {
         let parts = calendar.dateComponents([.hour, .minute], from: now)
         let minutes = (parts.hour ?? 0) * 60 + (parts.minute ?? 0)
-        let nextStep = (minutes / Self.step + 1) * Self.step
-        untilMinutes = (nextStep + 60) % Self.minutesPerDay
+        let nextStep = (minutes / step + 1) * step
+        return (nextStep + 60) % minutesPerDay
     }
 
     mutating func increase() { change(by: Self.step) }

@@ -30,10 +30,17 @@ struct CustomTimeTests {
     @Test func untilWrapsPastMidnight() {
         let now = date(day: 7, hour: 22, minute: 38)
         var time = CustomTime(now: now, calendar: calendar)
-        time.mode = .until
+        time.select(.until, now: now, calendar: calendar)
         time.increase()
 
         #expect(time.untilMinutes == 0)
         #expect(time.condition(after: now, calendar: calendar) == .until(date(day: 8, hour: 0, minute: 0)))
+    }
+    
+    @Test func switchingToUntilStartsFromNow() {
+        var time = CustomTime(now: date(day: 7, hour: 9, minute: 0), calendar: calendar)
+        time.select(.until, now: date(day: 7, hour: 17, minute: 5), calendar: calendar)
+
+        #expect(time.untilMinutes == 18 * 60 + 15)
     }
 }
