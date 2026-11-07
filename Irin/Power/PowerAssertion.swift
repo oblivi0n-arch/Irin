@@ -1,6 +1,6 @@
 import IOKit.pwr_mgt
 
-final class PowerAssertion {
+final class PowerAssertion: KeepAwake {
     enum Kind {
         case system
         case display
