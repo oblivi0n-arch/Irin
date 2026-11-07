@@ -3,6 +3,12 @@ import SwiftUI
 
 final class PanelController: NSObject, NSWindowDelegate {
     private lazy var panel: NSPanel = makePanel()
+    private let session: AwakeSession
+
+    init(session: AwakeSession) {
+        self.session = session
+        super.init()
+    }
 
     func toggle(on screen: NSScreen?) {
         panel.isVisible ? close() : open(on: screen)
@@ -36,7 +42,7 @@ final class PanelController: NSObject, NSWindowDelegate {
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.delegate = self
 
-        let hosting = NSHostingController(rootView: PanelView())
+        let hosting = NSHostingController(rootView: PanelView(session: session))
         panel.contentViewController = hosting
         return panel
     }
