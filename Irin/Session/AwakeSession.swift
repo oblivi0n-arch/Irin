@@ -21,6 +21,13 @@ final class AwakeSession {
         state != .resting
     }
     
+    var endsAt: Date? {
+        if case .watching(_, let endsAt) = state {
+            return endsAt
+        }
+        return nil
+    }
+    
     func start( condition: EndCondition, now: Date = .now) {
         let endsAt: Date? = switch condition {
         case .duration(let seconds): now.addingTimeInterval(seconds)
