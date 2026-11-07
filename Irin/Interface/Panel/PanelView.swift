@@ -17,7 +17,6 @@ struct PanelView: View {
                 presets
                 preferences
                 footer
-                signature
             }
         }
         .foregroundStyle(Palette.ink)
@@ -130,19 +129,26 @@ struct PanelView: View {
     }
 
     private var footer: some View {
-        HStack {
-            Button("Quit \(IrinApp.appName)") {
-                NSApp.terminate(nil)
-            }
-            .buttonStyle(.quiet)
+        VStack(spacing: Metrics.Spacing.l) {
+            HStack(spacing: 0) {
+                Button("Quit \(IrinApp.appName)") {
+                    NSApp.terminate(nil)
+                }
+                .buttonStyle(.inscribed("ΤΕΛΟΣ"))
 
-            Spacer()
+                Rectangle()
+                    .fill(Palette.divider)
+                    .frame(width: Metrics.hairline)
 
-            Button("Stop watching") {
-                session.stop()
+                Button("Stop watching") {
+                    session.stop()
+                }
+                .buttonStyle(.inscribed("ΑΝΑΠΑΥΣΙΣ"))
+                .disabled(!session.isWatching)
             }
-            .buttonStyle(.primary)
-            .disabled(!session.isWatching)
+            .fixedSize(horizontal: false, vertical: true)
+
+            signature
         }
     }
     

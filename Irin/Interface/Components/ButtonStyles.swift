@@ -14,28 +14,40 @@ struct PrimaryButtonStyle: ButtonStyle {
     }
 }
 
-struct QuietButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(Typography.caption)
-            .foregroundStyle(configuration.isPressed ? Palette.ink : Palette.inkSecondary)
-            .frame(minHeight: Metrics.controlHeight)
-            .contentShape(.rect)
-    }
-}
-
 extension ButtonStyle where Self == PrimaryButtonStyle {
     static var primary: PrimaryButtonStyle { PrimaryButtonStyle() }
 }
 
-extension ButtonStyle where Self == QuietButtonStyle {
-    static var quiet: QuietButtonStyle { QuietButtonStyle() }
+struct InscribedButtonStyle: ButtonStyle {
+    let inscription: String
+    @Environment(\.isEnabled) private var isEnabled
+
+    func makeBody(configuration: Configuration) -> some View {
+        VStack(spacing: Metrics.Spacing.s) {
+            Text(inscription)
+                .font(Typography.inscription)
+                .tracking(Typography.Tracking.inscription)
+                .foregroundStyle(Palette.inkInscription)
+
+            configuration.label
+                .font(Typography.caption)
+                .foregroundStyle(Palette.ink)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Metrics.Spacing.m)
+        .contentShape(.rect)
+        .opacity(isEnabled ? (configuration.isPressed ? 0.6 : 1) : 0.3)
+    }
+}
+
+extension ButtonStyle where Self == InscribedButtonStyle {
+    static func inscribed(_ inscription: String) -> InscribedButtonStyle {
+        InscribedButtonStyle(inscription: inscription)
+    }
 }
 
 #Preview {
     HStack {
-        Button("Quit") {}
-            .buttonStyle(.quiet)
         Spacer()
         Button("Stop watching") {}
             .buttonStyle(.primary)
