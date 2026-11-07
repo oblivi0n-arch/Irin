@@ -4,12 +4,12 @@ import SwiftUI
 final class PanelController: NSObject, NSWindowDelegate {
     private lazy var panel: NSPanel = makePanel()
 
-    func toggle() {
-        panel.isVisible ? close() : open()
+    func toggle(on screen: NSScreen?) {
+        panel.isVisible ? close() : open(on: screen)
     }
 
-    func open() {
-        position()
+    func open(on screen: NSScreen?) {
+        position(on: screen ?? NSScreen.main)
         panel.makeKeyAndOrderFront(nil)
     }
 
@@ -41,9 +41,8 @@ final class PanelController: NSObject, NSWindowDelegate {
         return panel
     }
 
-    private func position() {
-        guard let screen = NSScreen.builtIn ?? NSScreen.main,
-              let content = panel.contentViewController else { return }
+    private func position(on screen: NSScreen?) {
+        guard let screen, let content = panel.contentViewController else { return }
 
         let size = content.view.fittingSize
         let menuBarHeight = screen.frame.maxY - screen.visibleFrame.maxY

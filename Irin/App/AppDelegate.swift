@@ -16,6 +16,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc private func togglePanel() {
-        panelController.toggle()
+        panelController.toggle(on: statusItem?.button?.window?.screen)
     }
 }
