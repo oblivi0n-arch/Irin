@@ -13,11 +13,13 @@
   "files": [
     { "path": "Version.xcconfig" },
     { "kind": "folder", "path": "Irin", "target-membership": [ "Irin" ] },
+    { "kind": "folder", "path": "IrinTests", "target-membership": [ "IrinTests" ] },
     {
       "kind": "group",
       "name": "Products",
       "children": [
         { "path": "<PRODUCTS>/Irin.app", "id": "000000000000000000000120", "type": "wrapper.application", "index": false },
+        { "path": "<PRODUCTS>/IrinTests.xctest", "id": "11C483BD309F6D1C001A4C45", "type": "wrapper.cfbundle", "index": false },
       ],
     },
   ],
@@ -64,6 +66,37 @@
         "SWIFT_EMIT_LOC_STRINGS": "YES",
         "SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY": "YES",
         "SWIFT_VERSION": "5.0",
+      },
+    }, {
+      "name": "IrinTests",
+      "id": "11C483BC309F6D1C001A4C45",
+      "product": "Products/IrinTests.xctest",
+      "product-type": "bundle.unit-test",
+      "test-host-target": "Irin",
+      "dependencies": [
+        "Irin",
+      ],
+      "build-phases": [
+        "compile-sources",
+        "frameworks",
+        "resources",
+      ],
+      "build-settings": {
+        "BUNDLE_LOADER": "$(TEST_HOST)",
+        "CODE_SIGN_STYLE": "Automatic",
+        "CURRENT_PROJECT_VERSION": "1",
+        "DEVELOPMENT_TEAM": "DSFF5DJ6C5",
+        "GENERATE_INFOPLIST_FILE": "YES",
+        "MARKETING_VERSION": "1.0",
+        "PRODUCT_BUNDLE_IDENTIFIER": "oblivi0n-arch.IrinTests",
+        "PRODUCT_NAME": "$(TARGET_NAME)",
+        "SDKROOT": "macosx",
+        "STRING_CATALOG_GENERATE_SYMBOLS": "NO",
+        "SWIFT_APPROACHABLE_CONCURRENCY": "YES",
+        "SWIFT_EMIT_LOC_STRINGS": "NO",
+        "SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY": "YES",
+        "SWIFT_VERSION": "5.0",
+        "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/Irin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Irin",
       },
     },
   ],
@@ -138,5 +171,5 @@
     "XROS_DEPLOYMENT_TARGET": "27.2",
   },
   "last-upgrade": "27.0",
-  "last-swift-update": "27.0",
+  "last-swift-update": "27.2",
 }
