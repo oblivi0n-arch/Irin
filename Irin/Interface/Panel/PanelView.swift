@@ -4,6 +4,7 @@ import SwiftUI
 struct PanelView: View {
     let session: AwakeSession
     @State private var selectedPresetID: Preset.ID?
+    @State private var customTime = CustomTime()
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
@@ -83,6 +84,20 @@ struct PanelView: View {
                     }
                 }
             }
+            
+            CustomTimeField(
+                isUntil: customTime.mode == .until,
+                value: customValueText,
+                onModeChange: { isUntil in
+                    customTime.select(isUntil ? .until : .duration)
+                },
+                onDecrease: { customTime.decrease() },
+                onIncrease: { customTime.increase() },
+                onStart: {
+                    selectedPresetID = nil
+                    session.start(condition: customTime.condition())
+                }
+            )
         }
     }
 
@@ -120,6 +135,13 @@ struct PanelView: View {
             return "Your Mac stays awake until you stop it."
         }
         return "Your Mac stays awake until \(endsAt.formatted(date: .omitted, time: .shortened))."
+    }
+    
+    private var customValueText: String {
+        switch customTime.mode {
+        case .duration: DurationText.short(minutes: customTime.durationMinutes)
+        case .until: DurationText.timeOfDay(minutes: customTime.untilMinutes)
+        }
     }
 }
 
