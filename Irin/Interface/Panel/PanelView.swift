@@ -17,6 +17,7 @@ struct PanelView: View {
                 presets
                 preferences
                 footer
+                signature
             }
         }
         .foregroundStyle(Palette.ink)
@@ -143,6 +144,13 @@ struct PanelView: View {
             .buttonStyle(.primary)
             .disabled(!session.isWatching)
         }
+    }
+    
+    private var signature: some View {
+        Text(IrinApp.signature)
+            .font(Typography.inscription)
+            .tracking(Typography.Tracking.inscription)
+            .foregroundStyle(Palette.inkInscription)
     }
 
     // MARK: - Text
