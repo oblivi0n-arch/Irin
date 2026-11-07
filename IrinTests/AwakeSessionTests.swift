@@ -98,4 +98,28 @@ struct AwakeSessionTests {
         #expect(session.isWatching == false)
         #expect(power.isActive == false)
     }
+    
+    @Test func displayPreferenceChoosesTheAssertion() {
+        let session = AwakeSession(power: power)
+        session.keepsDisplayOn = true
+        session.start(condition: .duration(60), now: start)
+
+        #expect(power.lastKind == .display)
+    }
+
+    @Test func switchingDisplayWhileWatchingSwapsTheAssertion() {
+        let session = AwakeSession(power: power)
+        session.start(condition: .duration(60), now: start)
+        session.keepsDisplayOn = true
+
+        #expect(power.lastKind == .display)
+        #expect(power.isActive)
+    }
+
+    @Test func switchingDisplayWhileRestingHoldsNothing() {
+        let session = AwakeSession(power: power)
+        session.keepsDisplayOn = true
+
+        #expect(power.isActive == false)
+    }
 }

@@ -10,6 +10,17 @@ final class AwakeSession {
     
     private(set) var state: State = .resting
     
+    var keepsDisplayOn = false {
+        didSet {
+            guard isWatching, keepsDisplayOn != oldValue else { return }
+            power.activate(kind, reason: reason)
+        }
+    }
+
+    private var kind: PowerAssertion.Kind {
+        keepsDisplayOn ? .display : .system
+    }
+    
     private let power: any KeepAwake
     private let reason = "\(IrinApp.appName) is keeping your Mac awake"
     
@@ -37,7 +48,7 @@ final class AwakeSession {
         
         if let endsAt, endsAt <= now { return }
         
-        power.activate(.system, reason: reason)
+        power.activate(kind, reason: reason)
         state = .watching(startedAt: now, endsAt: endsAt)
     }
     
