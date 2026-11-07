@@ -12,4 +12,19 @@ enum DurationText {
         }
         return String(format: "%d:%02d", minutes, seconds)
     }
+    
+    static func short(minutes: Int) -> String {
+        let hours = minutes / 60
+        let rest = minutes % 60
+
+        switch (hours, rest) {
+        case (0, _): return "\(rest) min"
+        case (_, 0): return "\(hours) h"
+        default: return "\(hours) h \(rest) min"
+        }
+    }
+
+    static func timeOfDay(minutes: Int) -> String {
+        String(format: "%02d:%02d", minutes / 60, minutes % 60)
+    }
 }
