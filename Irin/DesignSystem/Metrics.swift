@@ -18,4 +18,6 @@ enum Metrics {
     static let panelWidth: CGFloat = 680
     static let tileHeight: CGFloat = 72
     static let customValueWidth: CGFloat = 96
+    static let lineWeight: CGFloat = 2
+    static let toggleMarkWidth: CGFloat = 24
 }
