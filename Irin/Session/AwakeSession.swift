@@ -18,6 +18,13 @@ final class AwakeSession {
     }
     
     var stopsOnLowBattery = false
+    
+    private(set) var stoppedOnLowBattery = false
+
+    static var lowBatteryPercent: Int {
+        Int(lowBatteryLevel * 100)
+    }
+    
     static let lowBatteryLevel = 0.2
 
     private var kind: PowerAssertion.Kind {
@@ -51,12 +58,14 @@ final class AwakeSession {
         
         if let endsAt, endsAt <= now { return }
         
+        stoppedOnLowBattery = false
         power.activate(kind, reason: reason)
         state = .watching(startedAt: now, endsAt: endsAt)
     }
     
     func stop() {
         power.release()
+        stoppedOnLowBattery = false
         state = .resting
     }
     
@@ -85,7 +94,8 @@ final class AwakeSession {
               battery.isOnBattery,
               battery.level < Self.lowBatteryLevel
         else { return }
-
+        
         stop()
+        stoppedOnLowBattery = true
     }
 }

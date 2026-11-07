@@ -117,7 +117,7 @@ struct PanelView: View {
                     .fill(Palette.divider)
                     .frame(width: Metrics.hairline)
 
-                Toggle("Stop below \(Int(AwakeSession.lowBatteryLevel * 100)) % battery", isOn: $stopsOnLowBattery)
+                Toggle("Stop below \(AwakeSession.lowBatteryPercent)) % battery", isOn: $stopsOnLowBattery)
                     .toggleStyle(.inscribed("ΔΥΝΑΜΙΣ"))
             }
             .fixedSize(horizontal: false, vertical: true)
@@ -156,7 +156,9 @@ struct PanelView: View {
 
     private var subline: String {
         guard session.isWatching else {
-            return "Your Mac may sleep as usual."
+            return session.stoppedOnLowBattery
+                ? "Stopped: battery below \(AwakeSession.lowBatteryPercent) %."
+                : "Your Mac may sleep as usual."
         }
         guard let endsAt = session.endsAt else {
             return "Your Mac stays awake until you stop it."
