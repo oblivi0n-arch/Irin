@@ -6,4 +6,6 @@ extension IrinApp {
     static var version: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.0.0"
     }
+    
+    static let epithet = "ΕΓΡΗΓΟΡΟΙ"
 }
