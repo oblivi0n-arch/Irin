@@ -6,13 +6,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let session = AwakeSession()
     private lazy var panelController = PanelController(session: session)
     private var ticker: Timer?
+    private let battery: any BatteryReading = SystemBattery()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         item.button?.target = self
         item.button?.action = #selector(togglePanel)
         statusItem = item
-
+        Preferences.apply(to: session)
+        
         observeSession()
         startTicker()
     }
@@ -43,7 +45,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func startTicker() {
         ticker = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             MainActor.assumeIsolated {
-                self?.session.expireIfNeeded()
+                guard let self else { return }
+                self.session.expireIfNeeded()
+                self.session.stopIfBatteryLow(self.battery.current())
             }
         }
     }

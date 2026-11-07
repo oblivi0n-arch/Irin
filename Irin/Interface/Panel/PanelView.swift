@@ -5,6 +5,9 @@ struct PanelView: View {
     let session: AwakeSession
     @State private var selectedPresetID: Preset.ID?
     @State private var customTime = CustomTime()
+    
+    @AppStorage(Preferences.keepsDisplayOn) private var keepsDisplayOn = false
+    @AppStorage(Preferences.stopsOnLowBattery) private var stopsOnLowBattery = false
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
@@ -12,6 +15,7 @@ struct PanelView: View {
                 header
                 status(at: context.date)
                 presets
+                preferences
                 footer
             }
         }
@@ -23,6 +27,8 @@ struct PanelView: View {
             RoundedRectangle(cornerRadius: Metrics.Radius.panel)
                 .strokeBorder(Palette.stroke)
         }
+        .onChange(of: keepsDisplayOn) { session.keepsDisplayOn = keepsDisplayOn }
+        .onChange(of: stopsOnLowBattery) { session.stopsOnLowBattery = stopsOnLowBattery }
     }
 
     // MARK: - Sections
@@ -98,6 +104,27 @@ struct PanelView: View {
                     session.start(condition: customTime.condition())
                 }
             )
+        }
+    }
+    
+    private var preferences: some View {
+        VStack(spacing: Metrics.Spacing.m) {
+            HStack(spacing: 0) {
+                Toggle("Display stays on", isOn: $keepsDisplayOn)
+                    .toggleStyle(.inscribed("ΦΩΣ"))
+
+                Rectangle()
+                    .fill(Palette.divider)
+                    .frame(width: Metrics.hairline)
+
+                Toggle("Stop below \(Int(AwakeSession.lowBatteryLevel * 100)) % battery", isOn: $stopsOnLowBattery)
+                    .toggleStyle(.inscribed("ΔΥΝΑΜΙΣ"))
+            }
+            .fixedSize(horizontal: false, vertical: true)
+
+            Text("The system itself always stays awake while \(IrinApp.appName) is watching.")
+                .font(Typography.caption)
+                .foregroundStyle(Palette.inkInscription)
         }
     }
 

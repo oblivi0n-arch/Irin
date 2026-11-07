@@ -20,4 +20,5 @@ enum Metrics {
     static let customValueWidth: CGFloat = 96
     static let lineWeight: CGFloat = 2
     static let toggleMarkWidth: CGFloat = 24
+    static let hairline: CGFloat = 1
 }
