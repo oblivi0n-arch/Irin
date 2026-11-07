@@ -31,8 +31,11 @@ final class AwakeSession {
     func start( condition: EndCondition, now: Date = .now) {
         let endsAt: Date? = switch condition {
         case .duration(let seconds): now.addingTimeInterval(seconds)
+        case .until(let date): date
         case .indefinitely: nil
         }
+        
+        if let endsAt, endsAt <= now { return }
         
         power.activate(.system, reason: reason)
         state = .watching(startedAt: now, endsAt: endsAt)

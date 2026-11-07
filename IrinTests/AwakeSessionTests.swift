@@ -81,4 +81,21 @@ struct AwakeSessionTests {
         #expect(session.isWatching == false)
         #expect(power.isActive == false)
     }
+    
+    @Test func untilEndsAtTheGivenDate() {
+        let session = AwakeSession(power: power)
+        let end = start.addingTimeInterval(90 * 60)
+        session.start(condition: .until(end), now: start)
+
+        #expect(session.endsAt == end)
+        #expect(session.remaining(at: start) == TimeInterval(90 * 60))
+    }
+
+    @Test func untilInThePastDoesNotStart() {
+        let session = AwakeSession(power: power)
+        session.start(condition: .until(start.addingTimeInterval(-60)), now: start)
+
+        #expect(session.isWatching == false)
+        #expect(power.isActive == false)
+    }
 }
