@@ -1,4 +1,4 @@
 // Version.xcconfig
 // Written by Ashira's release window in the release commit.
-MARKETING_VERSION = 0.2.0
-CURRENT_PROJECT_VERSION = 3
+MARKETING_VERSION = 0.3.0
+CURRENT_PROJECT_VERSION = 4
