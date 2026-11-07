@@ -16,7 +16,7 @@ final class PowerAssertion: KeepAwake {
     private var assertionID: IOPMAssertionID = 0
     private(set) var isActive = false
     
-    func activate( kind: Kind, reason: String) {
+    func activate(_ kind: Kind, reason: String) {
         release()
         
         let result = IOPMAssertionCreateWithName(
