@@ -17,4 +17,5 @@ enum Metrics {
     static let controlHeight: CGFloat = 44
     static let panelWidth: CGFloat = 680
     static let tileHeight: CGFloat = 72
+    static let customValueWidth: CGFloat = 96
 }
