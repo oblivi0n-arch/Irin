@@ -13,16 +13,34 @@ struct CustomTime: Equatable {
     private(set) var mode: Mode = .duration
     private(set) var durationMinutes = 90
     private(set) var untilMinutes: Int
+    private var untilChosenAt: Date
 
     init(now: Date = .now, calendar: Calendar = .current) {
         untilMinutes = Self.defaultUntil(now: now, calendar: calendar)
+        untilChosenAt = now
     }
 
     mutating func select(_ newMode: Mode, now: Date = .now, calendar: Calendar = .current) {
         if newMode == .until && mode != .until {
             untilMinutes = Self.defaultUntil(now: now, calendar: calendar)
+            untilChosenAt = now
         }
         mode = newMode
+    }
+    
+    mutating func refreshIfPassed(now: Date = .now, calendar: Calendar = .current) {
+        guard mode == .until,
+              case .until(let target) = EndCondition.until(
+                  hour: untilMinutes / 60,
+                  minute: untilMinutes % 60,
+                  after: untilChosenAt,
+                  calendar: calendar
+              ),
+              target <= now
+        else { return }
+
+        untilMinutes = Self.defaultUntil(now: now, calendar: calendar)
+        untilChosenAt = now
     }
 
     private static func defaultUntil(now: Date, calendar: Calendar) -> Int {

@@ -29,6 +29,9 @@ struct PanelView: View {
         }
         .onChange(of: keepsDisplayOn) { session.keepsDisplayOn = keepsDisplayOn }
         .onChange(of: stopsOnLowBattery) { session.stopsOnLowBattery = stopsOnLowBattery }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
+            customTime.refreshIfPassed()
+        }
     }
 
     // MARK: - Sections
@@ -72,12 +75,14 @@ struct PanelView: View {
                 .font(Typography.timer)
                 .foregroundStyle(session.isWatching ? Palette.ink : Palette.inkInscription)
 
-            Text(subline)
+            Text(subline(at: now))
                 .font(Typography.caption)
                 .foregroundStyle(Palette.inkSecondary)
 
-            ProgressLine(progress: session.progress(at: now) ?? (session.isWatching ? 1 : 0))
+            meander
                 .padding(.top, Metrics.Spacing.s)
+
+            ProgressLine(progress: session.progress(at: now) ?? (session.isWatching ? 1 : 0))
         }
     }
 
@@ -137,9 +142,7 @@ struct PanelView: View {
 
     private var footer: some View {
         VStack(spacing: Metrics.Spacing.m) {
-            Rectangle()
-                .fill(Palette.divider)
-                .frame(height: Metrics.hairline)
+            meander
 
             HStack(alignment: .firstTextBaseline) {
                 signature
@@ -158,6 +161,12 @@ struct PanelView: View {
             .tracking(Typography.Tracking.inscription)
             .foregroundStyle(Palette.inkInscription)
     }
+    
+    private var meander: some View {
+        Meander()
+            .stroke(Palette.ornament, lineWidth: Metrics.hairline)
+            .frame(height: Metrics.meanderHeight)
+    }
 
     // MARK: - Text
 
@@ -168,7 +177,7 @@ struct PanelView: View {
         return session.isWatching ? "∞" : "—"
     }
 
-    private var subline: String {
+    private func subline(at now: Date) -> String {
         guard session.isWatching else {
             return session.stoppedOnLowBattery
                 ? "Stopped: battery below \(AwakeSession.lowBatteryPercent) %."
@@ -177,7 +186,9 @@ struct PanelView: View {
         guard let endsAt = session.endsAt else {
             return "Your Mac stays awake until you stop it."
         }
-        return "Your Mac stays awake until \(endsAt.formatted(date: .omitted, time: .shortened))."
+        let time = endsAt.formatted(date: .omitted, time: .shortened)
+        let day = DurationText.isTomorrow(endsAt, from: now) ? " tomorrow" : ""
+        return "Your Mac stays awake until \(time)\(day)."
     }
     
     private var customValueText: String {

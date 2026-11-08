@@ -7,6 +7,7 @@ enum Palette {
 
     static let stroke = Color(hex: 0x2E2E2E)
     static let divider = Color(hex: 0x242424)
+    static let ornament = Color(hex: 0x4A4A47)
 
     static let ink = Color(hex: 0xF5F5F2)
     static let inkSecondary = Color(hex: 0x9A9A96)

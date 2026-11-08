@@ -43,4 +43,40 @@ struct CustomTimeTests {
 
         #expect(time.untilMinutes == 18 * 60 + 15)
     }
+    
+    @Test func passedUntilRefreshesOnReopen() {
+        let chosen = date(day: 7, hour: 10, minute: 0)
+        var time = CustomTime(now: chosen, calendar: calendar)
+        time.select(.until, now: chosen, calendar: calendar)
+
+        time.refreshIfPassed(now: date(day: 7, hour: 14, minute: 0), calendar: calendar)
+
+        #expect(time.untilMinutes == 15 * 60 + 15)
+    }
+
+    @Test func pendingUntilSurvivesReopen() {
+        let chosen = date(day: 7, hour: 23, minute: 0)
+        var time = CustomTime(now: chosen, calendar: calendar)
+        time.select(.until, now: chosen, calendar: calendar)
+
+        time.refreshIfPassed(now: date(day: 7, hour: 23, minute: 30), calendar: calendar)
+
+        #expect(time.untilMinutes == 15)
+    }
+    
+    @Test func durationStopsAtTheMaximum() {
+        var time = CustomTime(now: date(day: 7, hour: 16, minute: 38), calendar: calendar)
+        for _ in 0..<100 { time.increase() }
+
+        #expect(time.durationMinutes == CustomTime.durationRange.upperBound)
+    }
+
+    @Test func untilWrapsBackPastMidnight() {
+        let now = date(day: 7, hour: 22, minute: 50)
+        var time = CustomTime(now: now, calendar: calendar)
+        time.select(.until, now: now, calendar: calendar)
+        time.decrease()
+
+        #expect(time.untilMinutes == 23 * 60 + 45)
+    }
 }

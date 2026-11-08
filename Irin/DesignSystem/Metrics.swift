@@ -20,6 +20,7 @@ enum Metrics {
     static let customValueWidth: CGFloat = 96
     static let actionMinWidth: CGFloat = 140
     static let lineWeight: CGFloat = 2
+    static let meanderHeight: CGFloat = 12
     static let toggleMarkWidth: CGFloat = 24
     static let hairline: CGFloat = 1
 }
