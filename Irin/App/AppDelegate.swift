@@ -29,7 +29,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         withObservationTracking {
             updateIcon(isWatching: session.isWatching)
         } onChange: { [weak self] in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 self?.observeSession()
             }
         }
