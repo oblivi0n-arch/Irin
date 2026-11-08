@@ -36,7 +36,7 @@ struct PanelView: View {
     private var header: some View {
         VStack(spacing: Metrics.Spacing.s) {
             Image(systemName: session.isWatching ? "eye" : "eye.half.closed")
-                .font(.system(size: 30, weight: .light))
+                .font(Typography.eye)
 
             Text(IrinApp.appName.uppercased())
                 .font(Typography.wordmark)

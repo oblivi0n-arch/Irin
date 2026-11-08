@@ -12,7 +12,7 @@ struct PresetTile: View {
                 Text(numeral)
                     .font(Typography.inscription)
                     .tracking(Typography.Tracking.inscription)
-                    .foregroundStyle(isSelected ? Palette.inkInverted.opacity(0.6) : Palette.inkInscription)
+                    .foregroundStyle(isSelected ? Palette.inkInvertedSecondary : Palette.inkInscription)
                 
                 Text(title)
                     .font(Typography.button)

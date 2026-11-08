@@ -13,4 +13,5 @@ enum Palette {
     static let inkLabel = Color(hex: 0x8C8C88)
     static let inkInscription = Color(hex: 0x6E6E6A)
     static let inkInverted = Color(hex: 0x0E0E0E)
+    static let inkInvertedSecondary = inkInverted.opacity(0.6)
 }

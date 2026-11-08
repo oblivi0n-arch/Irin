@@ -6,7 +6,7 @@ struct ProgressLine: View {
     var body: some View {
         Capsule()
             .fill(Palette.raised)
-            .frame(height: 2)
+            .frame(height: Metrics.lineWeight)
             .overlay {
                 Capsule()
                     .fill(Palette.ink)
