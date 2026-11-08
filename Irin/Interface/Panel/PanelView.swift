@@ -100,6 +100,7 @@ struct PanelView: View {
                 onDecrease: { customTime.decrease() },
                 onIncrease: { customTime.increase() },
                 actionTitle: session.isWatching ? "Stop watching" : "Start",
+                actionIsOutlined: session.isWatching,
                 onAction: customAction
             )
         }

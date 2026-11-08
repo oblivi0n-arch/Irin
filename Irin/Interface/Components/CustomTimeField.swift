@@ -7,6 +7,7 @@ struct CustomTimeField: View {
     let onDecrease: () -> Void
     let onIncrease: () -> Void
     let actionTitle: String
+    let actionIsOutlined: Bool
     let onAction: () -> Void
 
     var body: some View {
@@ -26,7 +27,7 @@ struct CustomTimeField: View {
             Spacer()
 
             Button(actionTitle, action: onAction)
-                .buttonStyle(.primary)
+                .buttonStyle(PrimaryButtonStyle(isOutlined: actionIsOutlined))
         }
         .padding(.vertical, Metrics.Spacing.s)
         .padding(.leading, Metrics.Spacing.l)
@@ -63,10 +64,10 @@ struct CustomTimeField: View {
     VStack {
         CustomTimeField(isUntil: false, value: "1 h 30 min",
                         onModeChange: { _ in }, onDecrease: {}, onIncrease: {},
-                        actionTitle: "Start", onAction: {})
+                        actionTitle: "Start", actionIsOutlined: false, onAction: {})
         CustomTimeField(isUntil: true, value: "17:45",
                         onModeChange: { _ in }, onDecrease: {}, onIncrease: {},
-                        actionTitle: "Stop watching", onAction: {})
+                        actionTitle: "Stop watching", actionIsOutlined: true, onAction: {})
     }
     .padding()
     .frame(width: 624)
