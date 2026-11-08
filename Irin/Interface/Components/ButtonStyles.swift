@@ -32,7 +32,7 @@ struct InscribedButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {
-        VStack(spacing: Metrics.Spacing.s) {
+        HStack(alignment: .firstTextBaseline, spacing: Metrics.Spacing.s) {
             Text(inscription)
                 .font(Typography.inscription)
                 .tracking(Typography.Tracking.inscription)
@@ -42,8 +42,7 @@ struct InscribedButtonStyle: ButtonStyle {
                 .font(Typography.caption)
                 .foregroundStyle(Palette.ink)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, Metrics.Spacing.m)
+        .padding(.vertical, Metrics.Spacing.s)
         .contentShape(.rect)
         .opacity(isEnabled ? (configuration.isPressed ? 0.6 : 1) : 0.3)
     }

@@ -128,26 +128,19 @@ struct PanelView: View {
     }
 
     private var footer: some View {
-        VStack(spacing: Metrics.Spacing.l) {
-            HStack(spacing: 0) {
+        VStack(spacing: Metrics.Spacing.m) {
+            Rectangle()
+                .fill(Palette.divider)
+                .frame(height: Metrics.hairline)
+
+            HStack(alignment: .firstTextBaseline) {
+                signature
+                Spacer()
                 Button("Quit \(IrinApp.appName)") {
                     NSApp.terminate(nil)
                 }
                 .buttonStyle(.inscribed("ΤΕΛΟΣ"))
-
-                Rectangle()
-                    .fill(Palette.divider)
-                    .frame(width: Metrics.hairline)
-
-                Button("Stop watching") {
-                    session.stop()
-                }
-                .buttonStyle(.inscribed("ΑΝΑΠΑΥΣΙΣ"))
-                .disabled(!session.isWatching)
             }
-            .fixedSize(horizontal: false, vertical: true)
-
-            signature
         }
     }
     
