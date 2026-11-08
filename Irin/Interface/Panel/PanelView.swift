@@ -29,6 +29,9 @@ struct PanelView: View {
         }
         .onChange(of: keepsDisplayOn) { session.keepsDisplayOn = keepsDisplayOn }
         .onChange(of: stopsOnLowBattery) { session.stopsOnLowBattery = stopsOnLowBattery }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
+            customTime.refreshIfPassed()
+        }
     }
 
     // MARK: - Sections

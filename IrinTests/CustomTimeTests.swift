@@ -43,4 +43,24 @@ struct CustomTimeTests {
 
         #expect(time.untilMinutes == 18 * 60 + 15)
     }
+    
+    @Test func passedUntilRefreshesOnReopen() {
+        let chosen = date(day: 7, hour: 10, minute: 0)
+        var time = CustomTime(now: chosen, calendar: calendar)
+        time.select(.until, now: chosen, calendar: calendar)
+
+        time.refreshIfPassed(now: date(day: 7, hour: 14, minute: 0), calendar: calendar)
+
+        #expect(time.untilMinutes == 15 * 60 + 15)
+    }
+
+    @Test func pendingUntilSurvivesReopen() {
+        let chosen = date(day: 7, hour: 23, minute: 0)
+        var time = CustomTime(now: chosen, calendar: calendar)
+        time.select(.until, now: chosen, calendar: calendar)
+
+        time.refreshIfPassed(now: date(day: 7, hour: 23, minute: 30), calendar: calendar)
+
+        #expect(time.untilMinutes == 15)
+    }
 }
