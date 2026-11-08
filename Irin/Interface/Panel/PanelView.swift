@@ -51,11 +51,22 @@ struct PanelView: View {
 
     private func status(at now: Date) -> some View {
         VStack(spacing: Metrics.Spacing.s) {
-            Text(session.isWatching ? "Watching" : "Resting")
-                .font(Typography.sectionLabel)
-                .tracking(Typography.Tracking.sectionLabel)
-                .textCase(.uppercase)
-                .foregroundStyle(Palette.inkSecondary)
+            HStack(alignment: .firstTextBaseline, spacing: Metrics.Spacing.s) {
+                Text(session.isWatching ? "Watching" : "Resting")
+                    .font(Typography.sectionLabel)
+                    .tracking(Typography.Tracking.sectionLabel)
+                    .textCase(.uppercase)
+                    .foregroundStyle(Palette.inkSecondary)
+
+                Text("·")
+                    .font(Typography.sectionLabel)
+                    .foregroundStyle(Palette.inkInscription)
+
+                Text(session.isWatching ? "ΓΡΗΓΟΡΕΙ" : "ΑΝΑΠΑΥΕΤΑΙ")
+                    .font(Typography.inscription)
+                    .tracking(Typography.Tracking.inscription)
+                    .foregroundStyle(Palette.inkInscription)
+            }
 
             Text(timerText(at: now))
                 .font(Typography.timer)
