@@ -62,7 +62,7 @@ struct PanelView: View {
                     .font(Typography.sectionLabel)
                     .foregroundStyle(Palette.inkInscription)
 
-                Text(session.isWatching ? "ΓΡΗΓΟΡΕΙ" : "ΑΝΑΠΑΥΕΤΑΙ")
+                Text(session.isWatching ? Inscription.watching : Inscription.resting)
                     .font(Typography.inscription)
                     .tracking(Typography.Tracking.inscription)
                     .foregroundStyle(Palette.inkInscription)
@@ -83,7 +83,7 @@ struct PanelView: View {
 
     private var presets: some View {
         VStack(spacing: Metrics.Spacing.m) {
-            SectionHeader(title: "Watch for", inscription: "ΧΡΟΝΟΣ")
+            SectionHeader(title: "Watch for", inscription: Inscription.watchFor)
 
             HStack(spacing: Metrics.Spacing.s) {
                 ForEach(Preset.all) { preset in
@@ -117,14 +117,14 @@ struct PanelView: View {
         VStack(spacing: Metrics.Spacing.m) {
             HStack(spacing: 0) {
                 Toggle("Display stays on", isOn: $keepsDisplayOn)
-                    .toggleStyle(.inscribed("ΦΩΣ"))
+                    .toggleStyle(.inscribed(Inscription.display))
 
                 Rectangle()
                     .fill(Palette.divider)
                     .frame(width: Metrics.hairline)
 
                 Toggle("Stop below \(AwakeSession.lowBatteryPercent) % battery", isOn: $stopsOnLowBattery)
-                    .toggleStyle(.inscribed("ΔΥΝΑΜΙΣ"))
+                    .toggleStyle(.inscribed(Inscription.battery))
             }
             .fixedSize(horizontal: false, vertical: true)
 
@@ -146,7 +146,7 @@ struct PanelView: View {
                 Button("Quit \(IrinApp.appName)") {
                     NSApp.terminate(nil)
                 }
-                .buttonStyle(.inscribed("ΤΕΛΟΣ"))
+                .buttonStyle(.inscribed(Inscription.quit))
             }
         }
     }

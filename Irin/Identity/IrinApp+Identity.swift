@@ -6,7 +6,7 @@ extension IrinApp {
     static let author = "oblivi0n-arch"
 
     static var signature: String {
-        "\(author.uppercased()) ΕΠΟΙΗΣΕΝ · v\(version)"
+        "\(author.uppercased()) \(Inscription.madeBy) · v\(version)"
     }
     
     static var version: String {
