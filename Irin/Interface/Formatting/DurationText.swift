@@ -27,4 +27,8 @@ enum DurationText {
     static func timeOfDay(minutes: Int) -> String {
         String(format: "%02d:%02d", minutes / 60, minutes % 60)
     }
+    
+    static func isTomorrow(_ date: Date, from now: Date, calendar: Calendar = .current) -> Bool {
+        !calendar.isDate(date, inSameDayAs: now)
+    }
 }

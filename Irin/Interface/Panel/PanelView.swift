@@ -75,7 +75,7 @@ struct PanelView: View {
                 .font(Typography.timer)
                 .foregroundStyle(session.isWatching ? Palette.ink : Palette.inkInscription)
 
-            Text(subline)
+            Text(subline(at: now))
                 .font(Typography.caption)
                 .foregroundStyle(Palette.inkSecondary)
 
@@ -177,7 +177,7 @@ struct PanelView: View {
         return session.isWatching ? "∞" : "—"
     }
 
-    private var subline: String {
+    private func subline(at now: Date) -> String {
         guard session.isWatching else {
             return session.stoppedOnLowBattery
                 ? "Stopped: battery below \(AwakeSession.lowBatteryPercent) %."
@@ -186,7 +186,9 @@ struct PanelView: View {
         guard let endsAt = session.endsAt else {
             return "Your Mac stays awake until you stop it."
         }
-        return "Your Mac stays awake until \(endsAt.formatted(date: .omitted, time: .shortened))."
+        let time = endsAt.formatted(date: .omitted, time: .shortened)
+        let day = DurationText.isTomorrow(endsAt, from: now) ? " tomorrow" : ""
+        return "Your Mac stays awake until \(time)\(day)."
     }
     
     private var customValueText: String {
