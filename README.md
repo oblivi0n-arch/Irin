@@ -12,6 +12,8 @@ A macOS menu bar watcher that keeps your Mac awake for exactly as long as you ch
 
 When a long download, build or render has to finish, `caffeinate` in a terminal works, but you can't see it and it's easy to forget. The menu bar apps that do the same tend to hide their options in nested menus and Option-clicks. Irin opens one large panel, centred under the menu bar, with every choice visible and labelled plainly. It is made for the moment you need it: rare, brief, often late and tired. One click on a preset and the Mac stays awake; the panel shows how long, until when, and how much is left.
 
+I designed Irin and set every rule its code follows; the code was written with Claude.
+
 ## Built with
 
 <!-- quieta:built-with -->
