@@ -43,14 +43,17 @@ final class PanelController: NSObject, NSWindowDelegate {
         panel.delegate = self
 
         let hosting = NSHostingController(rootView: PanelView(session: session))
+        hosting.sizingOptions = []
         panel.contentViewController = hosting
         return panel
     }
 
     private func position(on screen: NSScreen?) {
-        guard let screen, let content = panel.contentViewController else { return }
+        guard let screen,
+              let hosting = panel.contentViewController as? NSHostingController<PanelView>
+        else { return }
 
-        let size = content.view.fittingSize
+        let size = hosting.sizeThatFits(in: CGSize(width: Metrics.panelWidth, height: .infinity))
         let menuBarHeight = screen.frame.maxY - screen.visibleFrame.maxY
 
         let origin = NSPoint(
