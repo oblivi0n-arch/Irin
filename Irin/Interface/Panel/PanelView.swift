@@ -83,11 +83,7 @@ struct PanelView: View {
 
     private var presets: some View {
         VStack(spacing: Metrics.Spacing.m) {
-            Text("Watch for")
-                .font(Typography.sectionLabel)
-                .tracking(Typography.Tracking.sectionLabel)
-                .textCase(.uppercase)
-                .foregroundStyle(Palette.inkLabel)
+            SectionHeader(title: "Watch for", inscription: "ΧΡΟΝΟΣ")
 
             HStack(spacing: Metrics.Spacing.s) {
                 ForEach(Preset.all) { preset in
