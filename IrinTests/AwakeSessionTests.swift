@@ -160,4 +160,37 @@ struct AwakeSessionTests {
 
         #expect(session.stoppedOnLowBattery == false)
     }
+    
+    @Test func startingAgainReplacesTheSession() {
+        let session = AwakeSession(power: power)
+        session.start(condition: .duration(60), now: start)
+        session.start(condition: .duration(3600), now: start.addingTimeInterval(10))
+
+        #expect(session.isWatching)
+        #expect(power.isActive)
+        #expect(session.endsAt == start.addingTimeInterval(3610))
+    }
+
+    @Test func batteryAtTheThresholdKeepsWatching() {
+        let session = AwakeSession(power: power)
+        session.stopsOnLowBattery = true
+        session.start(condition: .indefinitely, now: start)
+        session.stopIfBatteryLow(BatteryState(level: AwakeSession.lowBatteryLevel, isOnBattery: true))
+
+        #expect(session.isWatching)
+    }
+
+    @Test func progressIsFullAtTheStart() {
+        let session = AwakeSession(power: power)
+        session.start(condition: .duration(60), now: start)
+
+        #expect(session.progress(at: start) == 1)
+    }
+
+    @Test func remainingNeverGoesBelowZero() {
+        let session = AwakeSession(power: power)
+        session.start(condition: .duration(60), now: start)
+
+        #expect(session.remaining(at: start.addingTimeInterval(120)) == 0)
+    }
 }

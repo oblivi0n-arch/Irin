@@ -63,4 +63,20 @@ struct CustomTimeTests {
 
         #expect(time.untilMinutes == 15)
     }
+    
+    @Test func durationStopsAtTheMaximum() {
+        var time = CustomTime(now: date(day: 7, hour: 16, minute: 38), calendar: calendar)
+        for _ in 0..<100 { time.increase() }
+
+        #expect(time.durationMinutes == CustomTime.durationRange.upperBound)
+    }
+
+    @Test func untilWrapsBackPastMidnight() {
+        let now = date(day: 7, hour: 22, minute: 50)
+        var time = CustomTime(now: now, calendar: calendar)
+        time.select(.until, now: now, calendar: calendar)
+        time.decrease()
+
+        #expect(time.untilMinutes == 23 * 60 + 45)
+    }
 }
