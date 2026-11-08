@@ -99,10 +99,8 @@ struct PanelView: View {
                 },
                 onDecrease: { customTime.decrease() },
                 onIncrease: { customTime.increase() },
-                onStart: {
-                    selectedPresetID = nil
-                    session.start(condition: customTime.condition())
-                }
+                actionTitle: session.isWatching ? "Stop watching" : "Start",
+                onAction: customAction
             )
         }
     }
@@ -184,6 +182,15 @@ struct PanelView: View {
         switch customTime.mode {
         case .duration: DurationText.short(minutes: customTime.durationMinutes)
         case .until: DurationText.timeOfDay(minutes: customTime.untilMinutes)
+        }
+    }
+    
+    private func customAction() {
+        if session.isWatching {
+            session.stop()
+        } else {
+            selectedPresetID = nil
+            session.start(condition: customTime.condition())
         }
     }
 }

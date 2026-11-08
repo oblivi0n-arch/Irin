@@ -6,7 +6,8 @@ struct CustomTimeField: View {
     let onModeChange: (Bool) -> Void
     let onDecrease: () -> Void
     let onIncrease: () -> Void
-    let onStart: () -> Void
+    let actionTitle: String
+    let onAction: () -> Void
 
     var body: some View {
         HStack(spacing: Metrics.Spacing.m) {
@@ -24,7 +25,7 @@ struct CustomTimeField: View {
 
             Spacer()
 
-            Button("Start", action: onStart)
+            Button(actionTitle, action: onAction)
                 .buttonStyle(.primary)
         }
         .padding(.vertical, Metrics.Spacing.s)
@@ -61,9 +62,11 @@ struct CustomTimeField: View {
 #Preview {
     VStack {
         CustomTimeField(isUntil: false, value: "1 h 30 min",
-                        onModeChange: { _ in }, onDecrease: {}, onIncrease: {}, onStart: {})
+                        onModeChange: { _ in }, onDecrease: {}, onIncrease: {},
+                        actionTitle: "Start", onAction: {})
         CustomTimeField(isUntil: true, value: "17:45",
-                        onModeChange: { _ in }, onDecrease: {}, onIncrease: {}, onStart: {})
+                        onModeChange: { _ in }, onDecrease: {}, onIncrease: {},
+                        actionTitle: "Stop watching", onAction: {})
     }
     .padding()
     .frame(width: 624)
