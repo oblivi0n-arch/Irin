@@ -41,7 +41,7 @@ struct CustomTimeField: View {
 
     private func modeButton(_ title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
         Button(title, action: action)
-            .buttonStyle(.plain)
+            .buttonStyle(.interactive)
             .font(Typography.button)
             .foregroundStyle(isSelected ? Palette.ink : Palette.inkInscription)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -53,7 +53,7 @@ struct CustomTimeField: View {
                 .frame(width: Metrics.controlHeight, height: Metrics.controlHeight)
                 .contentShape(.rect)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.interactive)
         .font(Typography.body)
         .foregroundStyle(Palette.inkSecondary)
         .accessibilityLabel(label)

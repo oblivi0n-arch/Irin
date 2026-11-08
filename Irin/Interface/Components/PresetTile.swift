@@ -26,7 +26,7 @@ struct PresetTile: View {
             }
             .contentShape(.rect)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.interactive)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }

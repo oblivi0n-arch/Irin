@@ -53,6 +53,18 @@ extension ButtonStyle where Self == InscribedButtonStyle {
     }
 }
 
+struct InteractiveButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .contentShape(.rect)
+            .interactiveFeedback(isPressed: configuration.isPressed)
+    }
+}
+
+extension ButtonStyle where Self == InteractiveButtonStyle {
+    static var interactive: InteractiveButtonStyle { InteractiveButtonStyle() }
+}
+
 #Preview {
     HStack {
         Spacer()
