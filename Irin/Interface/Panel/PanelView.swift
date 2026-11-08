@@ -76,8 +76,10 @@ struct PanelView: View {
                 .font(Typography.caption)
                 .foregroundStyle(Palette.inkSecondary)
 
-            ProgressLine(progress: session.progress(at: now) ?? (session.isWatching ? 1 : 0))
+            meander
                 .padding(.top, Metrics.Spacing.s)
+
+            ProgressLine(progress: session.progress(at: now) ?? (session.isWatching ? 1 : 0))
         }
     }
 
@@ -137,9 +139,7 @@ struct PanelView: View {
 
     private var footer: some View {
         VStack(spacing: Metrics.Spacing.m) {
-            Rectangle()
-                .fill(Palette.divider)
-                .frame(height: Metrics.hairline)
+            meander
 
             HStack(alignment: .firstTextBaseline) {
                 signature
@@ -157,6 +157,12 @@ struct PanelView: View {
             .font(Typography.inscription)
             .tracking(Typography.Tracking.inscription)
             .foregroundStyle(Palette.inkInscription)
+    }
+    
+    private var meander: some View {
+        Meander()
+            .stroke(Palette.ornament, lineWidth: Metrics.hairline)
+            .frame(height: Metrics.meanderHeight)
     }
 
     // MARK: - Text
