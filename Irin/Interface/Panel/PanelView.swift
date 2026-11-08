@@ -101,6 +101,7 @@ struct PanelView: View {
             CustomTimeField(
                 isUntil: customTime.mode == .until,
                 value: customValueText,
+                stepMinutes: CustomTime.step,
                 onModeChange: { isUntil in
                     customTime.select(isUntil ? .until : .duration)
                 },

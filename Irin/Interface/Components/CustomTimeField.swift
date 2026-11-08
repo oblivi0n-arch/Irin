@@ -3,6 +3,7 @@ import SwiftUI
 struct CustomTimeField: View {
     let isUntil: Bool
     let value: String
+    let stepMinutes: Int
     let onModeChange: (Bool) -> Void
     let onDecrease: () -> Void
     let onIncrease: () -> Void
@@ -17,12 +18,12 @@ struct CustomTimeField: View {
 
             Spacer()
 
-            stepButton("minus", label: "Less", action: onDecrease)
+            stepButton("minus", label: "Less", help: stepHelp(isDecrease: true), action: onDecrease)
             Text(value)
                 .font(Typography.body)
                 .monospacedDigit()
                 .frame(minWidth: Metrics.customValueWidth)
-            stepButton("plus", label: "More", action: onIncrease)
+            stepButton("plus", label: "More", help: stepHelp(isDecrease: false), action: onIncrease)
 
             Spacer()
 
@@ -47,7 +48,7 @@ struct CustomTimeField: View {
             .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
-    private func stepButton(_ symbol: String, label: String, action: @escaping () -> Void) -> some View {
+    private func stepButton(_ symbol: String, label: String, help: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: symbol)
                 .frame(width: Metrics.controlHeight, height: Metrics.controlHeight)
@@ -57,15 +58,24 @@ struct CustomTimeField: View {
         .font(Typography.body)
         .foregroundStyle(Palette.inkSecondary)
         .accessibilityLabel(label)
+        .help(help)
+    }
+    
+    private func stepHelp(isDecrease: Bool) -> String {
+        let step = DurationText.short(minutes: stepMinutes)
+        let direction = isUntil
+            ? (isDecrease ? "earlier" : "later")
+            : (isDecrease ? "less" : "more")
+        return "\(step) \(direction)"
     }
 }
 
 #Preview {
     VStack {
-        CustomTimeField(isUntil: false, value: "1 h 30 min",
+        CustomTimeField(isUntil: false, value: "1 h 30 min", stepMinutes: 15,
                         onModeChange: { _ in }, onDecrease: {}, onIncrease: {},
                         actionTitle: "Start", actionIsOutlined: false, onAction: {})
-        CustomTimeField(isUntil: true, value: "17:45",
+        CustomTimeField(isUntil: true, value: "17:45", stepMinutes: 15,
                         onModeChange: { _ in }, onDecrease: {}, onIncrease: {},
                         actionTitle: "Stop watching", actionIsOutlined: true, onAction: {})
     }
