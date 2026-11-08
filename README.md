@@ -97,3 +97,8 @@ The interface is checked by hand before each release:
 - [ ] The panel opens under the menu bar on the screen that was clicked.
 - [ ] Quit ends the app; the eye leaves the menu bar.
 
+## License
+
+© 2026 oblivi0n-arch. All rights reserved.
+
+This covers the source code, the app icon and all artwork and screenshots. None of it may be copied, changed or redistributed without written permission.
