@@ -2,6 +2,7 @@ import SwiftUI
 
 enum Typography {
     static let wordmark = Font.system(size: 30, weight: .semibold, design: .serif)
+    static let eye = Font.system(size: 30, weight: .light)
     static let timer = Font.system(size: 64, weight: .medium, design: .serif).monospacedDigit()
     static let inscription = Font.system(size: 11, weight: .regular, design: .serif)
 

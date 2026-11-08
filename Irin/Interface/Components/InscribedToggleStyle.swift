@@ -25,9 +25,9 @@ struct InscribedToggleStyle: ToggleStyle {
             .padding(.vertical, Metrics.Spacing.m)
             .contentShape(.rect)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.interactive)
         .accessibilityAddTraits(.isToggle)
-        .animation(.easeOut(duration: 0.2), value: configuration.isOn)
+        .animation(Interaction.animation, value: configuration.isOn)
     }
 }
 

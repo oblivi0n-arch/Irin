@@ -36,7 +36,7 @@ struct PanelView: View {
     private var header: some View {
         VStack(spacing: Metrics.Spacing.s) {
             Image(systemName: session.isWatching ? "eye" : "eye.half.closed")
-                .font(.system(size: 30, weight: .light))
+                .font(Typography.eye)
 
             Text(IrinApp.appName.uppercased())
                 .font(Typography.wordmark)
@@ -51,11 +51,22 @@ struct PanelView: View {
 
     private func status(at now: Date) -> some View {
         VStack(spacing: Metrics.Spacing.s) {
-            Text(session.isWatching ? "Watching" : "Resting")
-                .font(Typography.sectionLabel)
-                .tracking(Typography.Tracking.sectionLabel)
-                .textCase(.uppercase)
-                .foregroundStyle(Palette.inkSecondary)
+            HStack(alignment: .firstTextBaseline, spacing: Metrics.Spacing.s) {
+                Text(session.isWatching ? "Watching" : "Resting")
+                    .font(Typography.sectionLabel)
+                    .tracking(Typography.Tracking.sectionLabel)
+                    .textCase(.uppercase)
+                    .foregroundStyle(Palette.inkSecondary)
+
+                Text("·")
+                    .font(Typography.sectionLabel)
+                    .foregroundStyle(Palette.inkInscription)
+
+                Text(session.isWatching ? Inscription.watching : Inscription.resting)
+                    .font(Typography.inscription)
+                    .tracking(Typography.Tracking.inscription)
+                    .foregroundStyle(Palette.inkInscription)
+            }
 
             Text(timerText(at: now))
                 .font(Typography.timer)
@@ -72,11 +83,7 @@ struct PanelView: View {
 
     private var presets: some View {
         VStack(spacing: Metrics.Spacing.m) {
-            Text("Watch for")
-                .font(Typography.sectionLabel)
-                .tracking(Typography.Tracking.sectionLabel)
-                .textCase(.uppercase)
-                .foregroundStyle(Palette.inkLabel)
+            SectionHeader(title: "Watch for", inscription: Inscription.watchFor)
 
             HStack(spacing: Metrics.Spacing.s) {
                 ForEach(Preset.all) { preset in
@@ -94,15 +101,15 @@ struct PanelView: View {
             CustomTimeField(
                 isUntil: customTime.mode == .until,
                 value: customValueText,
+                stepMinutes: CustomTime.step,
                 onModeChange: { isUntil in
                     customTime.select(isUntil ? .until : .duration)
                 },
                 onDecrease: { customTime.decrease() },
                 onIncrease: { customTime.increase() },
-                onStart: {
-                    selectedPresetID = nil
-                    session.start(condition: customTime.condition())
-                }
+                actionTitle: session.isWatching ? "Stop watching" : "Start",
+                actionIsOutlined: session.isWatching,
+                onAction: customAction
             )
         }
     }
@@ -111,14 +118,14 @@ struct PanelView: View {
         VStack(spacing: Metrics.Spacing.m) {
             HStack(spacing: 0) {
                 Toggle("Display stays on", isOn: $keepsDisplayOn)
-                    .toggleStyle(.inscribed("ΦΩΣ"))
+                    .toggleStyle(.inscribed(Inscription.display))
 
                 Rectangle()
                     .fill(Palette.divider)
                     .frame(width: Metrics.hairline)
 
-                Toggle("Stop below \(AwakeSession.lowBatteryPercent)) % battery", isOn: $stopsOnLowBattery)
-                    .toggleStyle(.inscribed("ΔΥΝΑΜΙΣ"))
+                Toggle("Stop below \(AwakeSession.lowBatteryPercent) % battery", isOn: $stopsOnLowBattery)
+                    .toggleStyle(.inscribed(Inscription.battery))
             }
             .fixedSize(horizontal: false, vertical: true)
 
@@ -129,20 +136,27 @@ struct PanelView: View {
     }
 
     private var footer: some View {
-        HStack {
-            Button("Quit \(IrinApp.appName)") {
-                NSApp.terminate(nil)
-            }
-            .buttonStyle(.quiet)
+        VStack(spacing: Metrics.Spacing.m) {
+            Rectangle()
+                .fill(Palette.divider)
+                .frame(height: Metrics.hairline)
 
-            Spacer()
-
-            Button("Stop watching") {
-                session.stop()
+            HStack(alignment: .firstTextBaseline) {
+                signature
+                Spacer()
+                Button("Quit \(IrinApp.appName)") {
+                    NSApp.terminate(nil)
+                }
+                .buttonStyle(.inscribed(Inscription.quit))
             }
-            .buttonStyle(.primary)
-            .disabled(!session.isWatching)
         }
+    }
+    
+    private var signature: some View {
+        Text(IrinApp.signature)
+            .font(Typography.inscription)
+            .tracking(Typography.Tracking.inscription)
+            .foregroundStyle(Palette.inkInscription)
     }
 
     // MARK: - Text
@@ -170,6 +184,15 @@ struct PanelView: View {
         switch customTime.mode {
         case .duration: DurationText.short(minutes: customTime.durationMinutes)
         case .until: DurationText.timeOfDay(minutes: customTime.untilMinutes)
+        }
+    }
+    
+    private func customAction() {
+        if session.isWatching {
+            session.stop()
+        } else {
+            selectedPresetID = nil
+            session.start(condition: customTime.condition())
         }
     }
 }
