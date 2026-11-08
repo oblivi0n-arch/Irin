@@ -2,7 +2,6 @@ import SwiftUI
 
 struct PrimaryButtonStyle: ButtonStyle {
     var isOutlined = false
-    @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -18,7 +17,8 @@ struct PrimaryButtonStyle: ButtonStyle {
                         .strokeBorder(Palette.ink, lineWidth: Metrics.lineWeight)
                 }
             }
-            .opacity(isEnabled ? (configuration.isPressed ? 0.8 : 1) : 0.3)
+            .contentShape(.rect(cornerRadius: Metrics.Radius.control))
+            .interactiveFeedback(isPressed: configuration.isPressed)
     }
 }
 
@@ -29,7 +29,6 @@ extension ButtonStyle where Self == PrimaryButtonStyle {
 
 struct InscribedButtonStyle: ButtonStyle {
     let inscription: String
-    @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: Metrics.Spacing.s) {
@@ -44,7 +43,7 @@ struct InscribedButtonStyle: ButtonStyle {
         }
         .padding(.vertical, Metrics.Spacing.s)
         .contentShape(.rect)
-        .opacity(isEnabled ? (configuration.isPressed ? 0.6 : 1) : 0.3)
+        .interactiveFeedback(isPressed: configuration.isPressed)
     }
 }
 
